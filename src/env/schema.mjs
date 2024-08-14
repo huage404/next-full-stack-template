@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
+  NEXTAUTH_SECRET: z.string()
 });
 
 /**
@@ -12,6 +13,7 @@ export const serverSchema = z.object({
  */
 export const serverEnv = {
   NODE_ENV: process.env.NODE_ENV,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET
 };
 
 /**
@@ -20,8 +22,8 @@ export const serverEnv = {
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  'NEXT_PUBLIC_DOMAIN_NAME': z.string(),
-  'NEXT_PUBLIC_PORT': z.string(),
+  NEXT_PUBLIC_DOMAIN_NAME: z.string(),
+  NEXT_PUBLIC_PORT: z.string(),
 });
 
 /**

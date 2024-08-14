@@ -1,13 +1,11 @@
-import { prisma } from '@/utils/prismaClient';
-import { NextAuthOptions } from 'next-auth';
+import {NextAuthOptions} from 'next-auth';
 
 import CredentialsProvider from "next-auth/providers/credentials";
 import {z} from "zod";
+import {env} from "@/env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
-  pages: {
-    signIn: '/login'
-  },
+  secret: env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -16,28 +14,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const parsedCredentials = z
-          .object({ username: z.string().email().trim(), password: z.string().trim() })
-          .safeParse(credentials);
-        if (!parsedCredentials.success) {
-          throw new Error('穿参格式错误')
-        }
-
-        const { username } = parsedCredentials.data;
-        const user = await prisma.user.findUnique({
-          where: {
-            email: username
-          }
-        });
-
-        if(!user) {
-          throw new Error('用户不存在')
-        }
-
+        // 模拟返回数据
         return {
-          id: user.id.toString(),
-          name: user.name,
-          email: user.email,
+          id: '0',
+          name: 'admin',
+          email: 'test@qq.com',
         };
       }
     })
